@@ -1,173 +1,181 @@
 <div align="center">
 
-<a href="https://github.com/MrCheeku"><img src="https://avatars.githubusercontent.com/u/235286067?v=4" width="96" height="96" alt="Mr.Cheeku GitHub avatar" /></a>
-
 # 🛡️ SENTINELX
 
 ### Your Personal AI Security Copilot
 
-<p><strong>Detect risks • Understand them with AI • Fix them immediately</strong></p>
+**Detect risk → Understand it with AI → Fix it → Rescan**
 
-<a href="https://github.com/MrCheeku"><img src="https://img.shields.io/badge/ENGINEERED%20BY-Mr.Cheeku-111827?style=for-the-badge&logo=github&logoColor=white" alt="Engineered by Mr.Cheeku" /></a>
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=111827)](https://react.dev/)
+[![NVIDIA](https://img.shields.io/badge/NVIDIA-Nemotron-76B900?style=for-the-badge&logo=nvidia&logoColor=white)](https://www.nvidia.com/en-us/ai-data-science/foundation-models/nemotron/)
+[![License](https://img.shields.io/badge/License-MIT-111827?style=for-the-badge)](LICENSE)
 
 </div>
 
 ---
 
-## 🛡️ What is SENTINELX?
+## 🎯 What is SENTINELX?
 
-**SENTINELX** is a privacy-first cybersecurity web application that combines deterministic local security analysis with an AI-powered security copilot.
+SENTINELX is a **privacy-first cybersecurity web application** that separates measurable security checks from AI interpretation.
 
-> **Secrets stay local. Sanitized security metadata can be analyzed by AI.**
+The browser-side engine calculates credential posture locally — including weak credentials, reuse, and stale credentials. Only **sanitized, non-secret security metadata** is sent to the AI boundary for explanation and prioritization.
 
-The local engine handles measurable checks such as password strength, reuse, freshness, and vault hygiene. The AI layer explains findings, prioritizes risks, and turns them into practical next steps.
+> **Demo rule: use synthetic credentials only. Never enter real passwords or secrets.**
 
-## ✨ Highlights
+## ✨ Core capabilities
 
-| Capability | What it does |
+| Capability | Description |
 |---|---|
-| **Security Dashboard** | Shows a 0–100 security posture score and current risk summary. |
-| **Security Scan** | Detects weak, reused, stale, and incomplete credentials locally. |
-| **Sentinel AI** | Explains security findings and creates prioritized recommendations. |
-| **Fix with Generator** | Moves directly from a detected risk to a stronger generated credential. |
-| **Credential Vault** | Stores and manages credentials with masked secrets. |
-| **Secure Generator** | Generates high-entropy passwords using browser cryptographic randomness. |
-| **Demo Mode** | Uses synthetic accounts for safe demonstrations. |
-| **Privacy Center** | Shows what non-secret metadata can cross the AI boundary. |
-| **AI Fallback** | Local security analysis continues when AI inference is unavailable. |
-| **Encrypted Backups** | Supports local backup and restore workflows. |
+| 🔍 Local Security Scan | Deterministic checks for weak, reused, and stale demo credentials. |
+| 📊 Security Posture | A 0–100 score with concrete findings and remediation priorities. |
+| 🤖 Sentinel AI | Uses an NVIDIA open-source model through the configured AI gateway to explain security findings. |
+| 🔐 Privacy Boundary | Rejects common credential/secret-bearing fields and markers before upstream inference. |
+| 🪄 Secure Generator | Generates 16–128 character credentials with browser Web Crypto. |
+| 🔧 Fix Risk | Immediately rotates a synthetic demo credential and lets the user rescan. |
+| 🛡️ Deterministic Fallback | Local recommendations remain available when AI inference is unavailable. |
+| 🧪 Test Coverage | Automated tests cover scoring, sanitization, privacy blocking, and credential generation. |
 
-## ✨ Core Experience
-
-```text
-Scan → Review Security → Generate AI Insight → Fix Risk → Rescan
-```
-
-## 🧰 Tech Stack
-
-<div align="center">
-
-### Frontend
-<img src="https://skillicons.dev/icons?i=react,typescript,vite,tailwind" alt="React, TypeScript, Vite, Tailwind CSS" />
-
-### Backend
-<img src="https://skillicons.dev/icons?i=nodejs,express" alt="Node.js, Express" />
-
-### AI & Infrastructure
-<img src="https://img.shields.io/badge/Nebius-Token%20Factory-111827?style=flat-square" alt="Nebius Token Factory" />
-<img src="https://img.shields.io/badge/NVIDIA-Open%20Source%20Model-76B900?style=flat-square" alt="NVIDIA Open Source Model" />
-
-### Security
-<img src="https://img.shields.io/badge/Web%20Crypto%20API-Local%20CSPRNG-2563eb?style=flat-square" alt="Web Crypto API" />
-<img src="https://img.shields.io/badge/Privacy-Sanitized%20AI%20Payloads-dc2626?style=flat-square" alt="Privacy-safe AI payloads" />
-
-</div>
-
-## 🧭 Project Structure
+## 🧭 Architecture
 
 ```mermaid
 flowchart TB
-    A[🛡️ SENTINELX] --> B[🖥️ Web UI]
-    B --> C[🔍 Local Security Engine]
-    C --> D[🔒 Privacy Sanitizer]
-    D --> E[⚙️ Express Backend]
+    A[🛡️ SENTINELX] --> B[🖥️ Browser UI]
+    B --> C[🔎 Local Security Engine]
+    C --> D[🔒 Sanitized Security Metadata]
+    D --> E[⚙️ Express API]
     E --> F[☁️ Nebius Token Factory]
     F --> G[🧠 NVIDIA Open-Source Model]
-    G --> H[🤖 Sentinel AI / Security Report]
-    H --> I[✅ Fix Risk + Rescan]
+    G --> H[🤖 Sentinel AI Report]
+    H --> I[✅ Fix + Rescan]
     I --> C
 
-    classDef root fill:#7c3aed,stroke:#c4b5fd,color:#ffffff,stroke-width:3px;
-    classDef ui fill:#2563eb,stroke:#93c5fd,color:#ffffff,stroke-width:2px;
-    classDef local fill:#059669,stroke:#6ee7b7,color:#ffffff,stroke-width:2px;
-    classDef privacy fill:#dc2626,stroke:#fca5a5,color:#ffffff,stroke-width:2px;
-    classDef backend fill:#475569,stroke:#cbd5e1,color:#ffffff,stroke-width:2px;
-    classDef ai fill:#d97706,stroke:#fcd34d,color:#ffffff,stroke-width:2px;
-    classDef result fill:#0891b2,stroke:#67e8f9,color:#ffffff,stroke-width:2px;
+    classDef root fill:#7c3aed,stroke:#c4b5fd,color:#fff,stroke-width:3px;
+    classDef local fill:#059669,stroke:#6ee7b7,color:#fff,stroke-width:2px;
+    classDef privacy fill:#dc2626,stroke:#fca5a5,color:#fff,stroke-width:2px;
+    classDef backend fill:#475569,stroke:#cbd5e1,color:#fff,stroke-width:2px;
+    classDef ai fill:#76b900,stroke:#d9f99d,color:#fff,stroke-width:2px;
+    classDef result fill:#0891b2,stroke:#67e8f9,color:#fff,stroke-width:2px;
 
     class A root;
-    class B ui;
+    class B local;
     class C local;
     class D privacy;
     class E backend;
     class F,G ai;
     class H,I result;
-
-    linkStyle default stroke:#94a3b8,stroke-width:2px;
 ```
 
-## 🛡️ Security Design
+## 🔐 Privacy model
 
-SENTINELX separates **deterministic security facts** from **AI interpretation**. Plaintext passwords, master passwords, encryption keys, raw vault exports, and private credential notes are not sent to the AI layer.
+The AI API is intentionally narrow:
 
-## ☁️ Nebius + NVIDIA AI
+- The security-analysis endpoint accepts aggregate metadata rather than credential records.
+- The chat endpoint validates both the user message and the context before sending anything upstream.
+- Common secret-bearing keys such as `password`, `api_key`, `access_token`, and `private_key` are rejected.
+- AI failures return a deterministic local recommendation instead of exposing internal provider errors.
 
-The Express backend proxies AI requests to **Nebius Token Factory / Nebius AI Cloud** using an NVIDIA open-source model. Provider credentials remain server-side.
+See [`SECURITY.md`](SECURITY.md) and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for details.
 
-```text
-GET  /api/health
-POST /api/ai/health
-POST /api/security/analyze
-POST /api/security/chat
-```
+## 🧰 Tech stack
 
-## 🚀 Getting Started
+**Frontend:** React 19, TypeScript, Vite, Tailwind CSS, Lucide, Motion
+
+**Backend:** Node.js, Express, TypeScript, dotenv
+
+**AI:** Nebius Token Factory with a configurable NVIDIA open-source model
+
+**Security:** Web Crypto API, local deterministic scoring, privacy boundary, fallback analysis
+
+## 🚀 Getting started
+
+### 1. Install dependencies
 
 ```bash
-git clone https://github.com/MrCheeku/SentinelX-Clean.git
-cd SentinelX-Clean
 npm install
+```
+
+### 2. Configure the AI provider
+
+Copy `.env.example` to `.env` and provide your own credentials locally.
+
+```bash
+cp .env.example .env
+```
+
+Never commit `.env` or provider credentials.
+
+### 3. Run development mode
+
+```bash
 npm run dev
 ```
 
-Create `.env` from `.env.example` and add your own Nebius credentials. Never commit `.env`.
+Then open the local URL shown by the server.
+
+### 4. Verify the project
+
+```bash
+npm run lint
+npm test
+npm run build
+```
 
 ## 🧪 Testing
 
-The project includes verification coverage for local scoring, password checks, reuse detection, credential staleness, vault hygiene, CSPRNG generation, privacy sanitization, backup serialization, and AI proxy/fallback behavior.
+The test suite in [`tests/security.test.ts`](tests/security.test.ts) validates the shared security engine, including deterministic scoring, sanitized metadata generation, secret detection, and Web Crypto credential generation.
 
-## 🧭 Roadmap
+## 📁 Project structure
 
-- [x] Local security scoring
-- [x] Credential risk detection
-- [x] Secure password generation
-- [x] Privacy-safe AI payloads
-- [x] Nebius backend integration
-- [x] Sentinel AI workflow
-- [x] Demo Mode
-- [x] AI fallback behavior
-- [ ] Expanded breach intelligence
+```text
+SENTINELX/
+├── src/
+│   ├── App.tsx          # React application UI
+│   ├── index.css        # Application styling
+│   ├── main.tsx         # React entry point
+│   └── security.ts      # Shared security/privacy engine
+├── tests/
+│   └── security.test.ts # Security and privacy tests
+├── docs/
+│   └── ARCHITECTURE.md  # Architecture and data-flow notes
+├── .env.example         # Safe configuration template
+├── SECURITY.md          # Security policy
+├── SUBMISSION.md        # NVIDIA demo/submission notes
+├── LICENSE              # MIT license
+├── package.json
+├── server.ts            # Express + AI gateway
+└── vite.config.ts
+```
+
+## ⚠️ Demo limitations
+
+SENTINELX is currently a **showcase/hackathon application**, not a production password manager. Demo credentials live in browser memory and are synthetic. Persistent encrypted vault storage, real breach intelligence, enterprise identity controls, and production-grade secret management are outside the current scope.
+
+## 🗺️ Roadmap
+
+- [x] Local credential posture scoring
+- [x] Weak/reused/stale risk detection
+- [x] Web Crypto credential generation
+- [x] Privacy-safe AI metadata boundary
+- [x] NVIDIA model integration through configurable provider gateway
+- [x] Deterministic AI fallback
+- [x] Automated security/privacy tests
+- [ ] Encrypted persistent vault
 - [ ] Passkey / WebAuthn support
+- [ ] Breach-intelligence integrations
+- [ ] Production authentication and audit logging
 
-## 🌐 Official Links
+## 👨‍💻 Engineered by Mr.Cheeku
 
-<div align="center">
-<a href="https://techwithcheeku.lovable.app/"><img src="https://img.shields.io/badge/Visit%20Tech%20with%20Cheeku-Website-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Visit Tech with Cheeku website" /></a>
-<a href="https://whatsapp.com/channel/0029Vb9OpwgD8SDvISwrn73Y"><img src="https://img.shields.io/badge/Join%20WhatsApp%20Channel-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" alt="Join WhatsApp Channel" /></a>
-</div>
+Built as a defensive cybersecurity and AI systems demonstration.
 
-## 👨‍💻 Engineered By
-
-<div align="center">
-<a href="https://github.com/MrCheeku"><img src="https://avatars.githubusercontent.com/u/235286067?v=4" width="88" height="88" alt="Mr.Cheeku GitHub avatar" /></a>
-
-### **Mr.Cheeku**
-
-<a href="https://github.com/MrCheeku"><img src="https://img.shields.io/badge/Visit%20Developer%20Profile-↗-111827?style=for-the-badge&logo=github&logoColor=white" alt="Visit Mr.Cheeku's GitHub profile" /></a>
-<br /><br />
-<a href="https://discord.gg/GWJvzcxuN"><img src="https://img.shields.io/badge/Join%20My%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord" /></a>
-</div>
+- GitHub: https://github.com/MrCheeku
+- Website: https://techwithcheeku.lovable.app/
 
 ---
 
 <div align="center">
-<a href="https://github.com/MrCheeku/SentinelX-Clean/issues">Report an issue</a> •
-<a href="https://github.com/MrCheeku/SentinelX-Clean">View source</a> •
-<a href="https://github.com/MrCheeku/SentinelX-Clean/releases">View releases</a> •
-<a href="https://github.com/MrCheeku">Developer profile</a>
 
-<br /><br />
+**SENTINELX — Detect • Understand • Fix**
 
-### 🛡️ SENTINELX
-**Detect • Understand • Fix**
 </div>
