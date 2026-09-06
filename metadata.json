@@ -1,0 +1,8 @@
+{
+  "name": "SENTINELX",
+  "version": "1.0.0",
+  "description": "Your Personal AI Security Copilot",
+  "author": "Mr.Cheeku",
+  "stack": ["React", "TypeScript", "Vite", "Express", "Nebius Token Factory", "NVIDIA Open-Source AI"],
+  "demoMode": true
+}
