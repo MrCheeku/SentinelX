@@ -12,7 +12,7 @@ import {
 const baseDate = Date.parse('2026-09-06T00:00:00Z');
 
 const credentials: Credential[] = [
-  { id: '1', title: 'GitHub', website: 'github.com', username: 'demo', password: 'Password123', updatedAt: '2026-08-01' },
+  { id: '1', title: 'GitHub', website: 'github.com', username: 'demo', password: 'Password123', updatedAt: '2026-07-01' },
   { id: '2', title: 'Google', website: 'google.com', username: 'demo@example.com', password: 'Password123', updatedAt: '2026-08-01' },
   { id: '3', title: 'Old Service', website: 'old.example', username: 'demo', password: 'VeryStrongPassword123!', updatedAt: '2025-01-01' },
 ];
