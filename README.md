@@ -3,7 +3,7 @@
 <img src="assets/header.svg" alt="SentinelX — AI-assisted defensive security copilot" width="100%" />
 
 <p>
-  <a href="https://github.com/MrCheeku/SentinelX"><img src="https://img.shields.io/github/stars/MrCheeku/SentinelX?style=for-the-badge&label=STARS&cacheSeconds=60&v=1" alt="GitHub stars" /></a>
+  <a href="https://github.com/MrCheeku/SentinelX"><img src="https://img.shields.io/github/stars/MrCheeku/SentinelX?style=for-the-badge&label=STARS&cacheSeconds=60&v=0" alt="GitHub stars" /></a>
   <a href="https://github.com/MrCheeku/SentinelX"><img src="https://img.shields.io/github/last-commit/MrCheeku/SentinelX?style=for-the-badge&label=UPDATED" alt="Last commit" /></a>
   <a href="https://github.com/MrCheeku/SentinelX"><img src="https://img.shields.io/github/repo-size/MrCheeku/SentinelX?style=for-the-badge&label=SIZE" alt="Repository size" /></a>
 </p>
@@ -303,4 +303,4 @@ SentinelX is currently a **showcase/hackathon application**, not a production pa
 
 </div>
 
-<!-- LIVE_STARS: 1 | automatically synced 2026-09-06T15:15:10.097Z -->
+<!-- LIVE_STARS: 0 | automatically synced 2026-09-06T17:36:39.742Z -->
