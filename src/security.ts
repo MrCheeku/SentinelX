@@ -14,7 +14,13 @@ export type SecurityMetrics = {
   stale: Credential[];
 };
 
-const SENSITIVE_MARKERS = [
+const SENSITIVE_KEY_NAMES = new Set([
+  'password', 'passwd', 'passcode', 'masterpassword', 'master_password',
+  'secret', 'secretkey', 'secret_key', 'encryptionkey', 'encryption_key',
+  'apikey', 'api_key', 'access_token', 'refresh_token', 'private_key',
+]);
+
+const SENSITIVE_TEXT_MARKERS = [
   'password:', 'password=', 'passwd:', 'passwd=', 'passcode:', 'passcode=',
   'plaintext', 'masterpassword', 'master_password', 'secretkey', 'secret_key',
   'encryptionkey', 'encryption_key', 'api_key=', 'apikey=', 'access_token=',
@@ -22,15 +28,23 @@ const SENSITIVE_MARKERS = [
 ];
 
 export function containsSensitiveInput(value: unknown): boolean {
-  if (value == null) return false;
-  let text: string;
-  try {
-    text = typeof value === 'string' ? value : JSON.stringify(value);
-  } catch {
-    return true;
-  }
-  const normalized = text.toLowerCase();
-  return SENSITIVE_MARKERS.some((marker) => normalized.includes(marker));
+  const inspect = (item: unknown): boolean => {
+    if (item == null) return false;
+    if (typeof item === 'string') {
+      const normalized = item.toLowerCase();
+      return SENSITIVE_TEXT_MARKERS.some((marker) => normalized.includes(marker));
+    }
+    if (Array.isArray(item)) return item.some(inspect);
+    if (typeof item === 'object') {
+      for (const [key, child] of Object.entries(item as Record<string, unknown>)) {
+        if (SENSITIVE_KEY_NAMES.has(key.toLowerCase())) return true;
+        if (inspect(child)) return true;
+      }
+    }
+    return false;
+  };
+
+  try { return inspect(value); } catch { return true; }
 }
 
 export function privacySafe(value: unknown): boolean {
@@ -57,9 +71,18 @@ export function generateSecureCredential(length = 20): string {
     throw new Error('Credential length must be an integer between 16 and 128.');
   }
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
-  const values = new Uint32Array(length);
-  crypto.getRandomValues(values);
-  return Array.from(values, (value) => alphabet[value % alphabet.length]).join('');
+  const limit = Math.floor(0x100000000 / alphabet.length) * alphabet.length;
+  let result = '';
+  const buffer = new Uint32Array(64);
+  while (result.length < length) {
+    crypto.getRandomValues(buffer);
+    for (const value of buffer) {
+      if (value >= limit) continue;
+      result += alphabet[value % alphabet.length];
+      if (result.length === length) break;
+    }
+  }
+  return result;
 }
 
 export function buildSanitizedMetadata(metrics: SecurityMetrics, totalCredentials: number) {
