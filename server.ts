@@ -1,6 +1,5 @@
 import express from 'express';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
 import { createServer as createViteServer } from 'vite';
 import { privacySafe } from './src/security';
@@ -112,14 +111,19 @@ app.post('/api/security/chat', async (req, res) => {
   }
 });
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-if (process.env.NODE_ENV !== 'production') {
-  const vite = await createViteServer({ server: { middlewareMode: true, host: '0.0.0.0' } });
-  app.use(vite.middlewares);
-} else {
-  app.use(express.static(path.join(__dirname, 'dist')));
-  app.get('*', (_req, res) => res.sendFile(path.join(__dirname, 'dist', 'index.html')));
+async function start() {
+  if (process.env.NODE_ENV !== 'production') {
+    const vite = await createViteServer({ server: { middlewareMode: true, host: '0.0.0.0' } });
+    app.use(vite.middlewares);
+  } else {
+    app.use(express.static(path.join(process.cwd(), 'dist')));
+    app.get('*', (_req, res) => res.sendFile(path.join(process.cwd(), 'dist', 'index.html')));
+  }
+
+  app.listen(PORT, '0.0.0.0', () => console.log(`SENTINELX running on http://localhost:${PORT}`));
 }
 
-app.listen(PORT, '0.0.0.0', () => console.log(`SENTINELX running on http://localhost:${PORT}`));
+start().catch((error) => {
+  console.error('SENTINELX failed to start:', error);
+  process.exit(1);
+});
