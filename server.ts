@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
 import { createServer as createViteServer } from 'vite';
-import { privacySafe } from './src/security.ts';
+import { privacySafe } from './src/security';
 
 dotenv.config();
 
