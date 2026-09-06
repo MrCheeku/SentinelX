@@ -38,9 +38,10 @@ test('builds metadata without credential contents', () => {
 
 test('blocks common secret-bearing payloads', () => {
   assert.equal(containsSensitiveInput('password: hunter2'), true);
-  assert.equal(containsSensitiveInput({ api_key: 'abc' }), false);
+  assert.equal(containsSensitiveInput({ api_key: 'abc' }), true);
   assert.equal(containsSensitiveInput('api_key=abc'), true);
   assert.equal(privacySafe({ securityScore: 80, weakCount: 1 }), true);
+  assert.equal(privacySafe({ password: 'demo' }), false);
 });
 
 test('generates high-entropy credentials of the requested length', () => {
