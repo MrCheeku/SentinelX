@@ -1,8 +1,9 @@
 {
   "name": "SENTINELX",
-  "version": "1.0.0",
-  "description": "Your Personal AI Security Copilot",
+  "version": "1.1.0",
+  "description": "Privacy-first AI security copilot for credential-risk analysis",
   "author": "Mr.Cheeku",
   "stack": ["React", "TypeScript", "Vite", "Express", "Nebius Token Factory", "NVIDIA Open-Source AI"],
-  "demoMode": true
+  "demoMode": true,
+  "submissionReady": true
 }
