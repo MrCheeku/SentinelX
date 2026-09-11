@@ -45,6 +45,16 @@ Scan → Score Risk → Explain with AI → Fix Finding → Rescan
 
 SentinelX combines a local security engine, privacy boundary, AI gateway, and remediation workflow into one focused defensive-security experience.
 
+
+## 🎬 Animated Security Flow
+
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/Mathan-2007/DevLeak-Shield/main/images/devleakshield-demo.gif" alt="Animated security scanning and secret-protection demonstration" width="900" />
+
+<sub>Animation reference: <a href="https://github.com/Mathan-2007/DevLeak-Shield">DevLeak-Shield</a></sub>
+
+</div>
 ---
 
 ## 🧰 Tech Stack
