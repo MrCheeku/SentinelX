@@ -54,6 +54,8 @@ SentinelX combines a local security engine, privacy boundary, AI gateway, and re
 
 <sub>Animation reference: <a href="https://github.com/Mathan-2007/DevLeak-Shield">DevLeak-Shield</a></sub>
 
+> 🎥 **Demo video only:** this animation is a small visual preview to give you an idea of the workflow. The actual **SentinelX** experience is much larger, with its own polished security dashboard, stronger visual presentation, themed interface, AI-assisted analysis, risk scoring, remediation flow, and a complete scan → explain → fix → rescan experience.
+
 </div>
 ---
 
