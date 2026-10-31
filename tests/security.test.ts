@@ -88,3 +88,25 @@ test('treats invalid timestamps as stale and ignores blank passwords for reuse',
   assert.deepEqual(metrics.stale.map((item) => item.id), ['bad-date']);
   assert.equal(metrics.weak.length, 2);
 });
+
+
+test('rejects normalized secret-bearing keys and token text', () => {
+  assert.equal(containsSensitiveInput({ apiKey: 'demo' }), true);
+  assert.equal(containsSensitiveInput({ 'private-key': 'demo' }), true);
+  assert.equal(containsSensitiveInput({ Authorization: 'Bearer abcdefgh123456' }), true);
+  assert.equal(containsSensitiveInput('client-secret=demo'), true);
+  assert.equal(containsSensitiveInput('-----BEGIN PRIVATE KEY-----'), true);
+  assert.equal(privacySafe('Authorization is a standard HTTP header.'), true);
+});
+
+test('handles invalid dates and blank passwords without false reuse', () => {
+  const records: Credential[] = [
+    { id: '1', title: 'Unknown date', website: 'one.test', username: 'a', password: 'UniquePassword123!', updatedAt: 'not-a-date' },
+    { id: '2', title: 'Blank one', website: 'two.test', username: 'b', password: '', updatedAt: '2026-08-01' },
+    { id: '3', title: 'Blank two', website: 'three.test', username: 'c', password: '', updatedAt: '2026-08-01' },
+  ];
+  const metrics = scoreFor(records, baseDate);
+  assert.deepEqual(metrics.reused, []);
+  assert.deepEqual(metrics.stale.map((item) => item.id), ['1']);
+  assert.equal(metrics.weak.length, 2);
+});
