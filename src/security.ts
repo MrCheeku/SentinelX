@@ -15,29 +15,33 @@ export type SecurityMetrics = {
 };
 
 const SENSITIVE_KEY_NAMES = new Set([
-  'password', 'passwd', 'passcode', 'masterpassword', 'master_password',
-  'secret', 'secretkey', 'secret_key', 'encryptionkey', 'encryption_key',
-  'apikey', 'api_key', 'access_token', 'refresh_token', 'private_key',
+  'password', 'passwd', 'passcode', 'masterpassword', 'secret', 'secretkey',
+  'encryptionkey', 'apikey', 'accesstoken', 'refreshtoken', 'privatekey',
+  'authorization', 'clientsecret', 'bearertoken', 'idtoken', 'sessiontoken',
 ]);
 
-const SENSITIVE_TEXT_MARKERS = [
-  'password:', 'password=', 'passwd:', 'passwd=', 'passcode:', 'passcode=',
-  'plaintext', 'masterpassword', 'master_password', 'secretkey', 'secret_key',
-  'encryptionkey', 'encryption_key', 'api_key=', 'apikey=', 'access_token=',
-  'refresh_token=', 'private_key',
+const SENSITIVE_TEXT_PATTERNS = [
+  /\\b(?:password|passwd|passcode|master[_-]?password)\\b\\s*[:=]\\s*\\S+/i,
+  /\\b(?:api[_-]?key|access[_-]?token|refresh[_-]?token|client[_-]?secret|private[_-]?key|authorization|bearer[_-]?token)\\b\\s*[:=]\\s*\\S+/i,
+  /\\bbearer\\s+[A-Za-z0-9._~+\\/-]{8,}/i,
+  /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/i,
+  /\\bplaintext\\b/i,
 ];
+
+function normalizeSensitiveKey(key: string): string {
+  return key.toLowerCase().replace(/[^a-z0-9]/g, '');
+}
 
 export function containsSensitiveInput(value: unknown): boolean {
   const inspect = (item: unknown): boolean => {
     if (item == null) return false;
     if (typeof item === 'string') {
-      const normalized = item.toLowerCase();
-      return SENSITIVE_TEXT_MARKERS.some((marker) => normalized.includes(marker));
+      return SENSITIVE_TEXT_PATTERNS.some((pattern) => pattern.test(item));
     }
     if (Array.isArray(item)) return item.some(inspect);
     if (typeof item === 'object') {
       for (const [key, child] of Object.entries(item as Record<string, unknown>)) {
-        if (SENSITIVE_KEY_NAMES.has(key.toLowerCase())) return true;
+        if (SENSITIVE_KEY_NAMES.has(normalizeSensitiveKey(key))) return true;
         if (inspect(child)) return true;
       }
     }
@@ -57,9 +61,19 @@ export function scoreFor(items: Credential[], nowMs = Date.now()): SecurityMetri
     (c) => c.password.length < 12 || !/[A-Z]/.test(c.password) || !/[a-z]/.test(c.password) || !/\d/.test(c.password),
   );
   const groups = new Map<string, number>();
-  items.forEach((c) => groups.set(c.password, (groups.get(c.password) || 0) + 1));
-  const reused = items.filter((c) => (groups.get(c.password) || 0) > 1);
-  const stale = items.filter((c) => (nowMs - new Date(c.updatedAt).getTime()) / 86400000 > 90);
+  items.forEach((credential) => {
+    // Empty values are weak, but they are not reuse of a credential.
+    if (credential.password.length > 0) {
+      groups.set(credential.password, (groups.get(credential.password) || 0) + 1);
+    }
+  });
+  const reused = items.filter(
+    (credential) => credential.password.length > 0 && (groups.get(credential.password) || 0) > 1,
+  );
+  const stale = items.filter((credential) => {
+    const updatedAtMs = Date.parse(credential.updatedAt);
+    return !Number.isFinite(updatedAtMs) || (nowMs - updatedAtMs) / 86400000 > 90;
+  });
   score -= weak.length * 10;
   score -= new Set(reused.map((c) => c.password)).size * 12;
   score -= stale.length * 6;
