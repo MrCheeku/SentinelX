@@ -21,11 +21,11 @@ const SENSITIVE_KEY_NAMES = new Set([
 ]);
 
 const SENSITIVE_TEXT_PATTERNS = [
-  /\\b(?:password|passwd|passcode|master[_-]?password)\\b\\s*[:=]\\s*\\S+/i,
-  /\\b(?:api[_-]?key|access[_-]?token|refresh[_-]?token|client[_-]?secret|private[_-]?key|authorization|bearer[_-]?token)\\b\\s*[:=]\\s*\\S+/i,
-  /\\bbearer\\s+[A-Za-z0-9._~+\\/-]{8,}/i,
+  /\b(?:password|passwd|passcode|master[_-]?password)\b\s*[:=]\s*\S+/i,
+  /\b(?:api[_-]?key|access[_-]?token|refresh[_-]?token|client[_-]?secret|private[_-]?key|authorization|bearer[_-]?token)\b\s*[:=]\s*\S+/i,
+  /\bbearer\s+[A-Za-z0-9._~+\/-]{8,}/i,
   /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/i,
-  /\\bplaintext\\b/i,
+  /\bplaintext\b/i,
 ];
 
 function normalizeSensitiveKey(key: string): string {
