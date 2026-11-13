@@ -304,4 +304,4 @@ SentinelX is currently a **showcase/hackathon application**, not a production pa
 
 </div>
 
-<!-- LIVE_STARS: 0 | automatically synced 2026-11-13T10:17:48.054Z -->
+<!-- LIVE_STARS: 0 | automatically synced 2026-11-13T17:55:24.385Z -->
