@@ -18,6 +18,7 @@ const SENSITIVE_KEY_NAMES = new Set([
   'password', 'passwd', 'passcode', 'masterpassword', 'secret', 'secretkey',
   'encryptionkey', 'apikey', 'accesstoken', 'refreshtoken', 'privatekey',
   'authorization', 'clientsecret', 'bearertoken', 'idtoken', 'sessiontoken',
+  'xapikey', 'xauthtoken', 'authtoken', 'xauthorization', 'proxyauthorization',
 ]);
 
 const SENSITIVE_TEXT_PATTERNS = [
