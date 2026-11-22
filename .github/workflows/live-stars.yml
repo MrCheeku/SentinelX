@@ -29,10 +29,12 @@ jobs:
             const current = Buffer.from(file.data.content, "base64").toString("utf8");
             const badge = `https://img.shields.io/github/stars/${owner}/${repo}?style=for-the-badge&label=STARS&cacheSeconds=60&v=${stars}`;
 
-            const updated = current.replace(
-              new RegExp("https://img\\\\.shields\\\\.io/github/stars/" + owner + "/" + repo + "\\\\?[^)\\\\s\\\\\"]*"),
-              badge
-            );
+            const badgePrefix = `https://img.shields.io/github/stars/${owner}/${repo}?`;
+            const badgeStart = current.indexOf(badgePrefix);
+            const badgeEnd = badgeStart >= 0 ? current.indexOf('"', badgeStart) : -1;
+            const updated = badgeEnd >= 0
+              ? current.slice(0, badgeStart) + badge + current.slice(badgeEnd)
+              : current;
 
             if (updated === current) {
               core.info(`README already reflects ${stars} stars.`);
