@@ -57,6 +57,8 @@ test('generates high-entropy credentials of the requested length', () => {
 
 test('normalizes secret-bearing property names and detects common token formats', () => {
   assert.equal(containsSensitiveInput({ apiKey: 'abc' }), true);
+  assert.equal(containsSensitiveInput({ 'X-API-Key': 'abc' }), true);
+  assert.equal(containsSensitiveInput('x-api-key=not-a-real-key'), true);
   assert.equal(containsSensitiveInput({ 'private-key': 'abc' }), true);
   assert.equal(containsSensitiveInput({ Authorization: 'Bearer abcdefgh123456' }), true);
   assert.equal(containsSensitiveInput('client-secret=not-a-real-secret'), true);
