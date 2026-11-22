@@ -59,6 +59,7 @@ test('normalizes secret-bearing property names and detects common token formats'
   assert.equal(containsSensitiveInput({ apiKey: 'abc' }), true);
   assert.equal(containsSensitiveInput({ 'X-API-Key': 'abc' }), true);
   assert.equal(containsSensitiveInput('x-api-key=not-a-real-key'), true);
+  assert.equal(containsSensitiveInput('x-auth-token: sample-token-value'), true);
   assert.equal(containsSensitiveInput('{"apiKey":"demo-secret"}'), true);
   assert.equal(containsSensitiveInput('{"Authorization":"Bearer demo-token-value"}'), true);
   assert.equal(containsSensitiveInput('{"password": "hunter2"}'), true);
