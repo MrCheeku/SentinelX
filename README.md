@@ -3,10 +3,9 @@
 <img src="assets/header.svg" alt="SentinelX — AI-assisted defensive security copilot" width="100%" />
 
 <p>
-  <a href="https://github.com/MrCheeku/SentinelX"><img src="https://img.shields.io/github/stars/MrCheeku/SentinelX?style=for-the-badge&label=STARS&cacheSeconds=60&v=1" alt="GitHub stars" /></a>
+  <a href="https://github.com/MrCheeku/SentinelX"><img src="https://img.shields.io/github/stars/MrCheeku/SentinelX?style=for-the-badge&label=STARS&cacheSeconds=60&v=0" alt="GitHub stars" /></a>
   <a href="https://github.com/MrCheeku/SentinelX"><img src="https://img.shields.io/github/last-commit/MrCheeku/SentinelX?style=for-the-badge&label=UPDATED" alt="Last commit" /></a>
   <a href="https://github.com/MrCheeku/SentinelX"><img src="https://img.shields.io/github/repo-size/MrCheeku/SentinelX?style=for-the-badge&label=SIZE" alt="Repository size" /></a>
-  <a href="https://github.com/MrCheeku/SentinelX/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/MrCheeku/SentinelX/ci.yml?branch=main&style=for-the-badge&label=CI" alt="SentinelX CI status" /></a>
 </p>
 
 <p><strong>Detect risk • Understand it with AI • Fix it • Rescan</strong></p>
@@ -267,7 +266,7 @@ SentinelX is currently a **showcase/hackathon application**, not a production pa
 
 <div align="center">
 
-<a href="https://techwithcheeku.app"><img src="https://img.shields.io/badge/Visit%20Tech%20with%20Cheeku-Website-7c3aed?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Visit Tech with Cheeku website" /></a>
+<a href="https://TechWithCheeku.app"><img src="https://img.shields.io/badge/Visit%20Tech%20with%20Cheeku-Website-7c3aed?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Visit Tech with Cheeku website" /></a>
 
 <a href="https://whatsapp.com/channel/0029Vb9OpwgD8SDvISwrn73Y"><img src="https://img.shields.io/badge/Join%20WhatsApp%20Channel-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" alt="Join Tech with Cheeku WhatsApp channel" /></a>
 
@@ -284,8 +283,6 @@ SentinelX is currently a **showcase/hackathon application**, not a production pa
 <a href="https://github.com/MrCheeku"><img src="https://avatars.githubusercontent.com/u/235286067?v=4" width="88" height="88" alt="Mr.Cheeku GitHub avatar" /></a>
 
 ### **Mr.Cheeku**
-
-**BSSE Student · Software Developer · AI Enthusiast**
 
 <a href="https://github.com/MrCheeku"><img src="https://img.shields.io/badge/Visit%20Developer%20Profile-↗-111827?style=for-the-badge&logo=github&logoColor=white" alt="Visit Mr.Cheeku's GitHub profile" /></a>
 
