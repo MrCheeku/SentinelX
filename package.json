@@ -3,7 +3,9 @@
   "private": true,
   "version": "1.1.1",
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "tsx server.ts",
     "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
@@ -11,7 +13,8 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test": "tsx --test tests/security.test.ts"
+    "test": "tsx --test tests/security.test.ts",
+    "test:coverage": "c8 --check-coverage --lines 90 --functions 90 --branches 80 --include src/security.ts --reporter=text --reporter=lcov tsx --test tests/security.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -34,6 +37,7 @@
     "esbuild": "^0.25.0",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
-    "typescript": "~5.8.2"
+    "typescript": "~5.8.2",
+    "c8": "^10.1.3"
   }
 }

@@ -29,6 +29,14 @@ const SENSITIVE_TEXT_PATTERNS = [
   /\bplaintext\b/i,
 ];
 
+const CHARACTER_GROUPS = [
+  'ABCDEFGHJKLMNPQRSTUVWXYZ',
+  'abcdefghijkmnopqrstuvwxyz',
+  '23456789',
+  '!@#$%&*',
+] as const;
+const ALL_CHARACTERS = CHARACTER_GROUPS.join('');
+
 function normalizeSensitiveKey(key: string): string {
   return key.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
@@ -49,7 +57,11 @@ export function containsSensitiveInput(value: unknown): boolean {
     return false;
   };
 
-  try { return inspect(value); } catch { return true; }
+  try {
+    return inspect(value);
+  } catch {
+    return true;
+  }
 }
 
 export function privacySafe(value: unknown): boolean {
@@ -81,23 +93,43 @@ export function scoreFor(items: Credential[], nowMs = Date.now()): SecurityMetri
   return { score: Math.max(0, Math.min(100, score)), weak, reused, stale };
 }
 
+function secureRandomIndex(maxExclusive: number): number {
+  if (!Number.isInteger(maxExclusive) || maxExclusive < 1 || maxExclusive > 0x100000000) {
+    throw new RangeError('Random selection bound must be an integer from 1 to 2^32.');
+  }
+
+  const range = 0x100000000;
+  const limit = Math.floor(range / maxExclusive) * maxExclusive;
+  const buffer = new Uint32Array(1);
+  let value: number;
+  do {
+    crypto.getRandomValues(buffer);
+    value = buffer[0];
+  } while (value >= limit);
+  return value % maxExclusive;
+}
+
 export function generateSecureCredential(length = 20): string {
   if (!Number.isInteger(length) || length < 16 || length > 128) {
     throw new Error('Credential length must be an integer between 16 and 128.');
   }
-  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
-  const limit = Math.floor(0x100000000 / alphabet.length) * alphabet.length;
-  let result = '';
-  const buffer = new Uint32Array(64);
-  while (result.length < length) {
-    crypto.getRandomValues(buffer);
-    for (const value of buffer) {
-      if (value >= limit) continue;
-      result += alphabet[value % alphabet.length];
-      if (result.length === length) break;
-    }
+
+  // Seed every required group, then fill and cryptographically shuffle the result.
+  // This guarantees complexity without relying on a probabilistic test of the pool.
+  const characters = CHARACTER_GROUPS.map(
+    (group) => group[secureRandomIndex(group.length)],
+  );
+
+  while (characters.length < length) {
+    characters.push(ALL_CHARACTERS[secureRandomIndex(ALL_CHARACTERS.length)]);
   }
-  return result;
+
+  for (let index = characters.length - 1; index > 0; index -= 1) {
+    const swapIndex = secureRandomIndex(index + 1);
+    [characters[index], characters[swapIndex]] = [characters[swapIndex], characters[index]];
+  }
+
+  return characters.join('');
 }
 
 export function buildSanitizedMetadata(metrics: SecurityMetrics, totalCredentials: number) {

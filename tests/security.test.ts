@@ -97,3 +97,71 @@ test('treats invalid timestamps as stale and ignores blank passwords for reuse',
 });
 
 
+
+
+test('safe values include primitives, arrays and nested records', () => {
+  assert.equal(containsSensitiveInput(null), false);
+  assert.equal(containsSensitiveInput(undefined), false);
+  assert.equal(containsSensitiveInput(42), false);
+  assert.equal(containsSensitiveInput(['ordinary text', { count: 2 }]), false);
+  assert.equal(containsSensitiveInput(['safe', { nested: [{ apiKey: 'demo' }] }]), true);
+  assert.equal(privacySafe(null), false);
+  assert.equal(privacySafe(undefined), false);
+});
+
+test('scores empty vaults as healthy and clamps severe findings to zero', () => {
+  assert.deepEqual(scoreFor([], baseDate), { score: 100, weak: [], reused: [], stale: [] });
+  const risky = Array.from({ length: 12 }, (_, index) => ({
+    id: String(index),
+    title: 'Risky',
+    website: 'example.test',
+    username: 'demo',
+    password: 'same',
+    updatedAt: '2020-01-01',
+  }));
+  const metrics = scoreFor(risky, baseDate);
+  assert.equal(metrics.score, 0);
+  assert.equal(metrics.weak.length, 12);
+  assert.equal(metrics.reused.length, 12);
+  assert.equal(new Set(metrics.reused.map((item) => item.password)).size, 1);
+  assert.equal(metrics.stale.length, 12);
+});
+
+test('counts multiple reused password groups once each', () => {
+  const items: Credential[] = [
+    { ...credentials[0], id: 'a', password: 'SharedOnePassword123!' },
+    { ...credentials[1], id: 'b', password: 'SharedOnePassword123!' },
+    { ...credentials[0], id: 'c', password: 'SharedTwoPassword123!' },
+    { ...credentials[1], id: 'd', password: 'SharedTwoPassword123!' },
+  ];
+  const metrics = scoreFor(items, baseDate);
+  assert.equal(metrics.reused.length, 4);
+  assert.equal(buildSanitizedMetadata(metrics, items.length).reusedCount, 2);
+});
+
+test('generates every required character class at supported boundary lengths', () => {
+  for (const length of [16, 20, 32, 64, 128]) {
+    for (let iteration = 0; iteration < 10; iteration += 1) {
+      const generated = generateSecureCredential(length);
+      assert.equal(generated.length, length);
+      assert.match(generated, /[A-Z]/);
+      assert.match(generated, /[a-z]/);
+      assert.match(generated, /[2-9]/);
+      assert.match(generated, /[!@#$%&*]/);
+    }
+  }
+});
+
+test('rejects non-integer and out-of-range credential lengths', () => {
+  for (const length of [0, 15, 129, 1.5, Number.NaN]) {
+    assert.throws(() => generateSecureCredential(length));
+  }
+});
+
+test('sanitized metadata only returns aggregate counts and unique risk categories', () => {
+  const metrics = scoreFor(credentials, baseDate);
+  const metadata = buildSanitizedMetadata(metrics, credentials.length);
+  assert.deepEqual(metadata.riskCategories.sort(), ['password_reuse', 'stale_credentials', 'weak_passwords']);
+  assert.equal(metadata.totalCredentials, 3);
+  assert.equal(JSON.stringify(metadata).includes(credentials[0].password), false);
+});
